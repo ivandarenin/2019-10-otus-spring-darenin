@@ -14,7 +14,5 @@ public class Main {
 
         StudentsTestRunnerService studentsTestRunnerService = context.getBean(StudentsTestRunnerService.class);
         studentsTestRunnerService.run(args);
-
-
     }
 }

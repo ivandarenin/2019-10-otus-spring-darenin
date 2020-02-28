@@ -2,6 +2,7 @@ package ru.otus.spring.dao;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.otus.spring.domain.Question;
 
@@ -16,9 +17,14 @@ public class QuestionDaoImpl implements QuestionDao {
 
     public QuestionDaoImpl(String resourceFileName){
         this.resourceFileName = resourceFileName;
-        Resource resourceFile = loadQuestions();
-        String fileContent = ResourceReader.asString(resourceFile);
-        parse(fileContent);
+    }
+
+    private void initQuestionList () {
+        if (!StringUtils.isEmpty(resourceFileName)) {
+            Resource resourceFile = loadQuestions();
+            String fileContent = ResourceReader.asString(resourceFile);
+            parse(fileContent);
+        }
     }
 
     private Resource loadQuestions() {
@@ -41,13 +47,15 @@ public class QuestionDaoImpl implements QuestionDao {
         }
     }
 
-
     @Override
     public Question getQuestionByNumber(int number){
+        if (CollectionUtils.isEmpty(listOfQuestions)) {
+            initQuestionList();
+        }
+
         if(listOfQuestions.size() >= number && number > 0) {
             return listOfQuestions.get(number - 1);
         }
         return null;
     }
-
 }
