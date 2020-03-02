@@ -8,4 +8,6 @@ target/
 /target/
 *.iml
 
-lesson01/.idea/
+/.idea/
+
+*/.idea/
